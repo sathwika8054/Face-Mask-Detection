@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MaskAI - Face Mask Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="app">
+    <aside class="sidebar">
+        <div class="brand">M<span>+</span> MaskAI</div>
+        <p class="side-label">WORKSPACE</p>
+        <a href="#overview" class="nav active">◈ &nbsp; Overview</a>
+        <a href="#image-panel" class="nav">▧ &nbsp; Image Detection</a>
+        <a href="#camera-panel" class="nav">◎ &nbsp; Live Camera</a>
+        <div class="side-status">🟢 &nbsp; Detection engine ready</div>
+    </aside>
+
+    <main id="overview">
+        <header class="topbar">
+            <span>Workspace / Face Mask Detection</span>
+            <span class="online">● SYSTEM ONLINE</span>
+        </header>
+
+        <section class="hero">
+            <div>
+                <p class="eyebrow">COMPUTER VISION PLATFORM</p>
+                <h1>See safety<br><span>in real time.</span></h1>
+                <p class="subtitle">AI-powered face mask detection using image analysis and live camera monitoring.</p>
+                <a href="#image-panel" class="main-btn">Start Detection ↗</a>
+            </div>
+            <div class="hero-art">
+                <div class="orb">◎</div>
+                <span>✦ AI VISION ACTIVE</span>
+            </div>
+        </section>
+
+        <section class="stats">
+            <div class="stat"><small>DETECTION MODES</small><h2>02</h2><p>Image + Live Camera</p></div>
+            <div class="stat"><small>AI MODEL</small><h2>Mask<span>Net</span></h2><p>Model loaded</p></div>
+            <div class="stat"><small>PROCESSING</small><h2>Live AI</h2><p>On-demand analysis</p></div>
+        </section>
+
+        <section id="image-panel">
+            <div class="section-title">
+                <div><p class="eyebrow">01 / IMAGE ANALYSIS</p><h2>Upload &amp; Detect</h2></div>
+                <span class="tag">IMAGE MODE</span>
+            </div>
+
+            <div class="columns">
+                <div class="panel">
+                    <h3>Upload an image</h3>
+                    <p class="muted">Choose a JPG or PNG image to analyse.</p>
+
+                    <form id="upload-form" action="/predict" method="POST" enctype="multipart/form-data">
+                        <label for="image-input" class="drop-zone" id="drop-zone">
+                            <div class="upload-icon">↑</div>
+                            <strong>Drop your image here</strong>
+                            <span>or <u>browse files</u></span>
+                            <small>JPG, JPEG, PNG</small>
+                        </label>
+                        <input type="file" id="image-input" name="image"
+                               accept="image/png,image/jpeg" hidden required>
+
+                        <div id="file-row" class="file-row" hidden>
+                            <span id="file-name"></span>
+                            <button type="button" id="clear-image" class="clear-btn">×</button>
+                        </div>
+                        <button class="main-btn full" id="detect-button" type="submit">✦ &nbsp; Analyse Image →</button>
+                    </form>
+                </div>
+
+                <div class="panel">
+                    <div class="result-heading">
+                        <div><h3>Detection Result</h3><p class="muted">AI-annotated image output</p></div>
+                        <span class="tag" id="result-tag">WAITING</span>
+                    </div>
+                    <div class="result-area" id="result-area">
+                        <div id="empty-result">
+                            <div class="empty-icon">＋</div>
+                            <strong>Your result appears here</strong>
+                            <p class="muted">Select an image and run detection.</p>
+                        </div>
+                        <img id="preview-image" alt="Selected image preview" hidden>
+                        {% if result %}
+                        <div id="server-result">
+                            <img src="{{ image_path }}" alt="Face mask detection result">
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% if result %}<p class="success" id="server-message">✓ {{ result }}</p>{% endif %}
+                </div>
+            </div>
+        </section>
+
+        <section id="camera-panel" class="camera-section">
+            <div class="section-title">
+                <div><p class="eyebrow">02 / REAL-TIME ANALYSIS</p><h2>Live Camera Detection</h2>
+                <p class="muted">Detection boxes appear directly over the live camera view.</p></div>
+                <span class="tag">LIVE MODE</span>
+            </div>
+
+            <div class="panel">
+                <div class="camera-header">
+                    <div><h3>Camera Monitor</h3><p class="muted">Allow camera permission when prompted.</p></div>
+                    <span id="camera-badge" class="tag">CAMERA STANDBY</span>
+                </div>
+
+                <!-- Video and AI result occupy the SAME area -->
+                <div class="camera-stage" id="camera-stage">
+                    <video id="webcam" autoplay playsinline muted></video>
+                    <img id="webcam-result" alt="AI detection overlay" hidden>
+                    <canvas id="camera-canvas" hidden></canvas>
+                    <div id="camera-placeholder" class="camera-placeholder">
+                        <div class="empty-icon">◎</div>
+                        <strong>Camera is waiting to start</strong>
+                        <p>Click Start Camera to begin detection.</p>
+                    </div>
+                    <div class="camera-label">LIVE AI FEED</div>
+                </div>
+
+                <div class="camera-controls">
+                    <p id="camera-status">Camera is not running.</p>
+                    <div>
+                        <button type="button" id="start-camera" class="main-btn">▶ Start Camera</button>
+                        <button type="button" id="stop-camera" class="stop-btn" disabled>■ Stop Camera</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>MaskAI · Face Safety Analytics <span>AI-POWERED DETECTION</span></footer>
+    </main>
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
+
