@@ -43,12 +43,6 @@ This project is a web-based Face Mask Detection System built using Python, Flask
    ```bash
    python app.py
    ```
-5. Open the local URL displayed in the terminal.
-
-## Deployment
-The application is deployed using Render.
-
-Live URL: https://face-mask-detection-82kr.onrender.com
 
 ## Note
 Camera access requires browser permission and HTTPS when accessed publicly. Detection accuracy depends on the trained model and the quality of the camera input.
